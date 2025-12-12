@@ -7,6 +7,8 @@ import { providePrimeNG } from 'primeng/config';
 import { SkyPreset } from './theme/sky-preset';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptorService } from './auth/service/auth-interceptor.service';
+import { ErrorInterceptorService } from './core/services/error-interceptor.service';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,13 +21,19 @@ export const appConfig: ApplicationConfig = {
         useClass: AuthInterceptorService,
         multi: true
     },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ErrorInterceptorService,
+        multi: true
+    },
+    MessageService,
     provideAnimations(),
         providePrimeNG({
             theme: {
                 preset: SkyPreset,
                 options: {
                     prefix: 'p',
-                    darkModeSelector: 'system',
+                    darkModeSelector: '.p-dark',
                     cssLayer: false
                 }
             }

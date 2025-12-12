@@ -3,27 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private token = signal<string | null>(localStorage.getItem('token'));
-  private user = signal<any>(JSON.parse(localStorage.getItem('user') || 'null'));
+  private user = signal(null)
   private isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
+  private _url: string = `${environment.api_url}`;
 
   constructor(
     private _http: HttpClient,
     private _router: Router
 ) {}
 
-  login(email: string, password: string): Observable<any> {
-    return this._http.post('/api/auth/login', { email, password })
-      .pipe(
-        tap((response: any) => {
-          this.setAuthData(response);
-        })
-      );
+  login(data: any) {
+    this._http.post(`${this._url}/login`, { login: data.email, password: data.password }).subscribe((res: any) => {
+      this.setAuthData(res);
+      this._router.navigate(['pages'])
+    })
   }
 
   authLogin() {
@@ -41,9 +41,9 @@ export class AuthService {
       this.token.set(response.token);
       localStorage.setItem('token', response.token);
     }
-    if (response.user) {
-      this.user.set(response.user);
-      localStorage.setItem('user', JSON.stringify(response.user));
+    if (response) {
+      this.user.set(response);
+      localStorage.setItem('user', JSON.stringify(response));
     }
     this.isLoggedIn.set(true);
   }

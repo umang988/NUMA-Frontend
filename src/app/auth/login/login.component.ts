@@ -5,7 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,23 +23,20 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private _authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 
   onSubmit() {
+    console.log("on submit called", this.loginForm.valid);
     if (this.loginForm.valid) {
-      this.authService.authLogin(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
-        },
-        error: (error) => {
-          console.error('Login failed:', error);
-        }
-      });
+      this._authService.login(this.loginForm.value)
     }
   }
 }

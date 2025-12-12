@@ -1,0 +1,28 @@
+<aside class="sidebar">
+  <div class="logo">
+    <img [src]="themeService.isDarkMode() ? '/logos/light.png' : '/logos/dark.png'" />
+  </div>
+
+  <section class="menu-section">
+    <div class="menu">
+      @for (item of menuItems; track $index) {
+        <div class="menu-item" [routerLink]="item.route" routerLinkActive="active">
+          <i class="pi" [ngClass]="item.icon"></i>
+          <div>{{ item.label }}</div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <div class="user-section">
+    <div class="user-info" (mouseenter)="userMenu.toggle($event)">
+      <p-avatar [label]="user.avatar" size="normal" shape="circle"></p-avatar>
+      <div class="user-details">
+        <div class="user-name">{{ user.name }}</div>
+        <div class="user-email">{{ user.email }}</div>
+      </div>
+    </div>
+    <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+  </div>
+  
+</aside>
