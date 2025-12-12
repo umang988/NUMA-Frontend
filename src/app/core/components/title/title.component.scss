@@ -1,0 +1,18 @@
+::ng-deep .p-breadcrumb {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 0.5rem;
+  
+  .p-breadcrumb-list {
+    background: none !important;
+    padding: 0 !important;
+  }
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}

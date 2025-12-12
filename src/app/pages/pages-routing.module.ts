@@ -10,6 +10,15 @@ const routes : Routes = [
         },
         {
             path: 'dashboard', component: DashboardComponent
+        },
+        {
+            path: 'orders', loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+        },
+        {
+            path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
+        },
+        {
+            path: 'vehicle', loadChildren: () => import('./vehicle/vehicle.module').then(m => m.VehicleModule)
         }
     ] }
 ];
